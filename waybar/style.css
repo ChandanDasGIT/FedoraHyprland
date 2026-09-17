@@ -1,0 +1,495 @@
+* {
+font-family: "JetBrainsMono Nerd Font", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+font-size: 18px;
+}
+
+
+window#waybar {
+    background-color: rgba(0, 0, 0, 0.65);
+    border-bottom: 3px solid rgba(100, 114, 125, 0.5);
+    color: #ffffff;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+/*
+ * window#waybar.empty {
+ *    background-color: transparent;
+ * }
+ * window#waybar.solo {
+ *    background-color: #FFFFFF;
+ * }
+ */
+
+window#waybar.termite {
+    background-color: #3F3F3F;
+}
+
+window#waybar.chromium {
+    background-color: #000000;
+    border: none;
+}
+
+button {
+    /* Use box-shadow instead of border so the text isn't offset */
+    box-shadow: inset 0 -3px transparent;
+    /* Avoid rounded borders under each button name */
+    border: none;
+    border-radius: 0;
+}
+
+/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+button:hover {
+    background: inherit;
+    box-shadow: inset 0 -3px #ffffff;
+}
+
+/* you can set a style on hover for any module like this */
+#pulseaudio:hover {
+background-color: #404040;
+}
+
+#workspaces button {
+padding: 0 5px;
+background-color: transparent;
+color: #ffffff;
+}
+
+#workspaces button:hover {
+background: rgba(0, 0, 0, 0.2);
+}
+
+#workspaces button.focused, #workspaces button.active {
+background-color: #64727D;
+box-shadow: inset 0 -3px #ffffff;
+}
+
+#workspaces button.urgent {
+background-color: transparent;
+}
+
+#mode {
+background-color: #64727D;
+box-shadow: inset 0 -3px #ffffff;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#power-profiles-daemon,
+#custom-power,
+#mpd {
+padding: 0 05px;
+color: #ffffff;
+}
+
+#window,
+#workspaces {
+margin: 0 4px;
+}
+
+/* If workspaces is the leftmost module, omit left margin */
+.modules-left > widget:first-child > #workspaces {
+    margin-left: 0;
+}
+
+/* If workspaces is the rightmost module, omit right margin */
+.modules-right > widget:last-child > #workspaces {
+    margin-right: 0;
+}
+
+#clock {
+color: #ffffff;
+background-color: transparent;
+}
+
+#battery {
+color: #ffffff;
+background-color: transparent;
+}
+
+#battery.charging, #battery.plugged {
+color: #ffffff;
+background-color: transparent;
+}
+
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: #000000;
+    }
+}
+
+/* Using steps() instead of linear as a timing function to limit cpu usage */
+#battery.critical:not(.charging) {
+background-color: #f53c3c;
+color: #ffffff;
+animation-name: blink;
+animation-duration: 0.5s;
+animation-timing-function: steps(12);
+animation-iteration-count: infinite;
+animation-direction: alternate;
+}
+
+#power-profiles-daemon {
+padding-right: 10px;
+}
+
+#power-profiles-daemon.performance {
+color: #ffffff;
+background-color: transparent;
+}
+
+#power-profiles-daemon.balanced {
+color: #ffffff;
+background-color: transparent;
+}
+
+#power-profiles-daemon.power-saver {
+color: #ffffff;
+background-color: transparent;
+}
+
+label:focus {
+    background-color: #000000;
+}
+
+#cpu {
+color: #ffffff;
+background-color: transparent;
+}
+
+#memory {
+color: #ffffff;
+background-color: transparent;
+}
+
+#disk {
+color: #ffffff;
+background-color: transparent;
+}
+
+#backlight {
+color: #ffffff;
+background-color: transparent;
+}
+
+#network {
+color: #ffffff;
+background-color: transparent;
+}
+
+#network.disconnected {
+color: #ffffff;
+background-color: transparent;
+}
+
+#pulseaudio {
+color: #ffffff;
+background-color: transparent;
+}
+
+#pulseaudio.muted {
+color: #ffffff;
+background-color: transparent;
+}
+
+#wireplumber {
+color: #ffffff;
+background-color: transparent;
+}
+
+#wireplumber.muted {
+color: #ffffff;
+background-color: transparent;
+}
+
+#custom-media {
+color: #ffffff;
+background-color: transparent;
+min-width: 100px;
+}
+
+#custom-media.custom-spotify {
+background-color: #66cc99;
+}
+
+#custom-media.custom-vlc {
+background-color: #ffa000;
+}
+
+#temperature {
+color: #ffffff;
+background-color: transparent;
+}
+
+#temperature.critical {
+background-color: #800020;
+}
+
+#tray {
+color: #ffffff;
+background-color: transparent;
+margin-top: -2px;
+margin-bottom: 2px
+}
+
+#tray > .passive {
+-gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+-gtk-icon-effect: highlight;
+background-color: transparent;
+}
+
+#idle_inhibitor {
+background-color: transparent;
+}
+
+#idle_inhibitor.activated {
+background-color: transparent;
+color: #ffffff;
+}
+
+#mpd {
+background-color: #66cc99;
+color: #2a5c45;
+}
+
+#mpd.disconnected {
+background-color: #f53c3c;
+}
+
+#mpd.stopped {
+background-color: #90b1b1;
+}
+
+#mpd.paused {
+background-color: #51a37a;
+}
+
+#language {
+background: #00b093;
+color: #740864;
+padding: 0 5px;
+margin: 0 5px;
+min-width: 16px;
+}
+
+#keyboard-state {
+background: #97e1ad;
+color: #000000;
+padding: 0 0px;
+margin: 0 5px;
+min-width: 16px;
+}
+
+#keyboard-state > label {
+padding: 0 5px;
+}
+
+#keyboard-state > label.locked {
+background: rgba(0, 0, 0, 0.2);
+}
+
+#scratchpad {
+background: rgba(0, 0, 0, 0.2);
+}
+
+#scratchpad.empty {
+background-color: transparent;
+}
+
+#privacy {
+padding: 0;
+}
+
+#privacy-item {
+padding: 0 5px;
+color: white;
+}
+
+#privacy-item.screenshare {
+background-color: #cf5700;
+}
+
+#privacy-item.audio-in {
+background-color: #1ca000;
+}
+
+#privacy-item.audio-out {
+background-color: #0069d4;
+}
+
+#custom-power {
+/* If it's shifted too high or low, adjust these margins */
+margin-top: 2px;
+margin-bottom: 0px;
+
+/* If the internal icon is misaligned, try adding this */
+padding-top: 0px;
+padding-bottom: 0px;
+}
+
+/* --- Custom Power Menu Styling --- */
+menu {
+    background: rgba(0, 0, 0, 0.85);
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 5px;
+    border: 1px solid rgba(100, 114, 125, 0.5);
+}
+
+menuitem {
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+menuitem:hover {
+    background: #64727D;
+    color: #ffffff;
+}
+
+#cava {
+background: transparent;
+color: #a6e3a1; /* Change to your preferred accent color */
+font-family: "JetBrainsMono Nerd Font", monospace;
+font-size: 14px;
+padding: 0 8px;
+min-width: 50px; /* Forces Waybar to allocate space for it */
+}
+
+#custom-cava {
+background: transparent;
+color: #ffffff; /* Change to your preferred accent color */
+letter-spacing: 1px;
+font-family: "JetBrainsMono Nerd Font", monospace;
+font-size: 5px;
+padding: 0 8px;
+min-width: 60px; /* Forces Waybar to allocate space for it */
+
+text-shadow:
+    -1px -1px 0 #000000,
+     1px -1px 0 #000000,
+    -1px  1px 0 #000000,
+     1px  1px 0 #000000;
+}
+
+#custom-tauon-prev,
+#custom-tauon-play,
+#custom-tauon-next {
+font-family: "JetBrainsMono Nerd Font", monospace;
+padding: 0 5px;
+margin: 4 4px;
+font-size: 15px;
+color: #ffffff;
+background: transparent;
+}
+
+#custom-tauon-prev:hover,
+#custom-tauon-play:hover,
+#custom-tauon-next:hover {
+color: #89b4fa; /* Accent color on hover */
+}
+
+#custom-hardware-toggle {
+padding: 0 8px;
+color: #00bfff; /* Matches your neon blue theme */
+font-size: 14px;
+}
+
+#custom-hardware-toggle:hover {
+color: #ffffff;
+}
+
+/* Optional container styling when expanded */
+#group-hardware-drawer {
+background-color: rgba(20, 20, 20, 0.6);
+border-radius: 6px;
+margin: 2px 0;
+}
+/* Drawer container styling */
+#group-workspace-drawer {
+background: transparent;
+padding: 0 4px;
+margin: 0;
+}
+
+/* Custom trigger button (1 ❯) */
+#custom-active-workspace {
+color: #ffffff;
+font-weight: bold;
+font-family: "Noto Sans Mono", sans-serif;
+padding: 0 0px 0 8px;
+margin: 0;
+background: transparent;
+}
+
+#custom-active-workspace:hover {
+color: #ffffff;
+}
+
+/* Remove default GTK button styles & gray boxes */
+#workspaces button {
+padding: 0 4px;
+background-color: transparent;
+color: #ffffff;
+box-shadow: none;
+text-shadow: none;
+border: none;
+border-radius: 0;
+border-bottom: 2px solid transparent;
+}
+
+/* Active workspace icon style */
+#workspaces button.active {
+color: #ffffff;
+background-color: transparent;
+
+}
+
+/* Hover effect on workspace icons */
+#workspaces button:hover {
+color: #ffffff;
+background-color: transparent;
+}
+
+#custom-wallpaper {
+padding: 0 10px;
+background-color: transparent;
+color: #ffffff;
+border-radius: 8px;
+margin: 4px 2px;
+}
+
+#custom-wallpaper:hover {
+background-color: #313244;
+}
+
+#custom-todo {
+font-size: 16px;
+padding: 0 10px;
+color: #ffffff;
+}
+
+#custom-todo:hover {
+background-color: rgba(255, 255, 255, 0.1);
+border-radius: 5px;
+}

@@ -1,0 +1,329 @@
+// -*- mode: jsonc -*-
+{
+    // "layer": "top", // Waybar at top layer
+    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "height": 30, // Waybar height (to be removed for auto height)
+    // "width": 1280, // Waybar width
+    "spacing": 4, // Gaps between modules (4px)
+    // Choose the order of the modules
+    "modules-left": [
+        "group/workspace-drawer",
+//        "hyprland/workspaces",
+        "sway/mode",
+        "sway/scratchpad",
+        "custom/media",
+        "custom/cava"
+    ],
+    "modules-center": [
+        "sway/window",
+        "clock",
+    ],
+    "modules-right": [
+        "custom/toggle-notes",
+        "group/hardware",
+//        "group/tauon-controls",
+//        "idle_inhibitor",
+        "pulseaudio",
+        //        "network",
+//        "power-profiles-daemon",
+//        "cpu",
+//        "memory",
+        "temperature",
+//        "backlight",
+        "keyboard-state",
+        "sway/language",
+        "battery",
+        "battery#bat2",
+        "tray",
+        "custom/power"
+    ],
+    // Modules configuration
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "warp-on-scroll": false,
+//        "format": "{name}: {icon}",
+        "format": "{icon}",
+        "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": "",
+            "7": "",
+            "8": "",
+            "9": "",
+            "10": "",
+            "urgent": "",
+            "focused": "",
+            "default": ""
+        }
+    },
+    "keyboard-state": {
+        "numlock": true,
+        "capslock": true,
+        "format": "{name} {icon}",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        }
+    },
+    "mpd": {
+        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
+        "format-disconnected": "Disconnected ",
+        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+        "unknown-tag": "N/A",
+        "interval": 5,
+        "consume-icons": {
+            "on": " "
+        },
+        "random-icons": {
+            "off": "<span color=\"#f53c3c\"></span> ",
+            "on": " "
+        },
+        "repeat-icons": {
+            "on": " "
+        },
+        "single-icons": {
+            "on": "1 "
+        },
+        "state-icons": {
+            "paused": "",
+            "playing": ""
+        },
+        "tooltip-format": "MPD (connected)",
+        "tooltip-format-disconnected": "MPD (disconnected)"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": "",
+        },
+        "start-activated": true
+    },
+    "tray": {
+        // "icon-size": 21,
+        "spacing": 10,
+        // "icons": {
+        //   "blueman": "bluetooth",
+        //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
+        // }
+    },
+    "clock": {
+        "timezone": "Asia/Kolkata",
+//        "format": "{:%I:%M %p}",
+        "format": "<b>{:%I:%M %p   | %d-%m-%Y}</b>",
+        "format-alt": "{:%Y-%m-%d}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "format":{
+                "today": "<span color='#ffffff'><u><b>{}</b></u></span>"
+            }
+        }
+    },
+    "cpu": {
+        "format": "{usage}% ",
+        "tooltip": false
+    },
+    "memory": {
+        "format": "{}% "
+    },
+    "temperature": {
+        // "thermal-zone": 2,
+        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°C {icon}",
+        "format": "{temperatureC}°C {icon}",
+        "format-icons": ["󰉬", "", "󰉪"]
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{percent}% {icon}",
+        "format-icons": ["", "", "", "", "", "", "", "", ""],
+        "min-brightness": 1
+    },
+    "battery": {
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-full": "{capacity}% {icon}",
+        "format-charging": "{capacity}% 󰃨",
+        "format-plugged": "{capacity}% ",
+        "format-alt": "{time} {icon}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "battery#bat2": {
+        "bat": "BAT2"
+    },
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "tooltip-format": "Power profile: {profile}\nCPU driver: {cpu_driver}\nPlatform driver: {platform_driver}",
+        "tooltip": true,
+        "format-icons": {
+            "default": "",
+            "performance": "",
+            "balanced": "",
+            "power-saver": ""
+        }
+    },
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+//        "format": "{volume}% {icon}   {format_source}",
+        "format": "{volume}% {icon}",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": "󰅶 {icon} {format_source}",
+        "format-muted": "󰅶 {format_source}",
+        "format-source": "{volume}% ",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "󰂑",
+            "headset": "󰂑",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+    "custom/power": {
+        "format" : "⏻ ",
+        "tooltip": false,
+        "menu": "on-click",
+        "menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
+        "menu-actions": {
+            "shutdown": "systemctl poweroff",
+            "reboot": "systemctl reboot",
+            "suspend": "systemctl suspend",
+            "hibernate": "systemctl hibernate"
+        }
+    },
+    "custom/media": {
+        "format": "󰝚  {}",
+        "escape": true,
+        "return-type": "json",
+        "max-length": 29,
+//        "on-click": "playerctl play-pause",
+//        "on-scroll-up": "playerctl next",
+//        "on-scroll-down": "playerctl previous",
+        "exec": "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{player}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F"
+    },
+    "custom/cava": {
+//        "exec": "cava -p ~/.config/cava/config_waybar | sed -u 's/;//g;s/0/ /g;s/1/▂/g;s/2/▃/g;s/3/▄/g;s/4/▅/g;s/5/▆/g;s/6/▇/g;s/7/█/g'",
+        "exec": "cava -p ~/.config/cava/config_waybar | sed -u 's/;//g;s/0/⣀/g;s/1/⣀/g;s/2/⣀/g;s/3/⣤/g;s/4/⣤/g;s/5/⣶/g;s/6/⣶/g;s/7/⣿/g;s/8/⣿/g'",
+        "tooltip": false,
+        "return-type": "plain",
+        "format": "{} ",
+        "min-width": 5,
+        "min-length": 8
+    },
+    "group/tauon-controls" : {
+        "orientation": "horizontal",
+        "format": "{}",
+        "escape": true,
+        "return-type": "json",
+        "max-length": 20,
+        "modules": [
+            "custom/tauon-prev",
+            "custom/tauon-play",
+            "custom/tauon-next"
+        ]
+    },
+    "custom/tauon-prev": {
+        "format": "󰒮",
+        "tooltip": true,
+        "tooltip-format": "shortcut: alt+LeftArrow",
+        "on-click": "playerctl -p tauon previous"
+    },
+
+    "custom/tauon-play": {
+        "format": "󰐊",
+        "tooltip": true,
+        "tooltip-format": "shortcut: alt+space",
+        "on-click": "playerctl -p tauon play-pause"
+    },
+
+    "custom/tauon-next": {
+        "format": "󰒭",
+        "tooltip": true,
+        "tooltip-format": "shortcut: alt+RightArrow",
+        "on-click": "playerctl -p tauon next"
+    },
+    //Expandable buttons for Info right side
+    "group/hardware": {
+        "orientation": "horizontal",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "not-memory",
+            "transition-left-to-right": false,
+            "click-to-reveal": true
+        },
+        "modules": [
+            "custom/drawer-toggle", // Clickable button that stays visible
+            "custom/todo",
+//            "idle_inhibitor",
+//            "power-profiles-daemon",
+            "cpu",
+            "memory",
+//            "temperature",
+//            "backlight",
+            "custom/wallpaper",
+        ]
+    },
+
+    "custom/drawer-toggle": {
+        "format": "❮",
+        "tooltip": false
+    },
+    //Expandable button for workspaces
+
+    "group/workspace-drawer": {
+        "orientation": "horizontal",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "not-memory",
+            "transition-left-to-right": true,
+            "click-to-reveal": true
+        },
+        "modules": [
+            "custom/active-workspace", // Clickable button that stays visible
+            "hyprland/workspaces",
+        ]
+    },
+
+//    "custom/active-workspace": {
+//        "format": " ❯",
+//        "tooltip": false
+//    },
+    "custom/active-workspace": {
+        "exec": "echo \"$(hyprctl activeworkspace -j | jq -r '.id') ❯\"; socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | stdbuf -oL awk -F '>>|,' '/workspace>>/ {print $2 \" ❯\"}'",
+        "format": "{}",
+        "tooltip": false
+    },
+    "custom/wallpaper": {
+        "format": "",
+        "tooltip": true,
+        "tooltip-format": "Left Click: Next Wallpaper\nRight Click: Prev Wallpaper",
+        "on-click": "~/.config/waybar/change_wallpaper.sh",
+        "on-click-right": "~/.config/waybar/change_wallpaper.sh special"
+    },
+    "custom/todo": {
+        "format": "",
+        "tooltip": true,
+        "tooltip-format": "Edit TO-DO list",
+        "on-click": "kitty --class floating-todo -e micro $HOME/.config/waybar/to-do.txt"
+    },
+    "custom/toggle-notes": {
+        "format": "",
+        "tooltip": true,
+        "tooltip-format": "TO-DO list and SHORTCUTS",
+        "on-click": "~/.config/waybar/toggle_notes.sh"
+    }
+}
