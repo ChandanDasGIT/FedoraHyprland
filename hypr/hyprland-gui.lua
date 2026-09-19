@@ -3,7 +3,7 @@
 -- Settings
 hl.config({
     general = {
-        resize_on_border = true,
+        resize_on_border = false,
     },
 })
 

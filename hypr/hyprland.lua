@@ -404,6 +404,8 @@ local ctrlMod = "CTRL"
 hl.bind(mainMod .. " + TAB", hl.dsp.exec_cmd("qs ipc call dock toggle"))
 hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("qs ipc call applauncher toggle"))
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("qs ipc call notifications toggle"))
+
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("qs ipc call workspaces toggle"))
 -- Toggle back and forth between the current and previously used workspace
 hl.bind(mainMod .. " + ESCAPE", hl.dsp.focus({ workspace = "previous" }))
 
