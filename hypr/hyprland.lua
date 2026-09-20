@@ -537,8 +537,8 @@ hl.window_rule({
 hl.window_rule({
     match = { class = "org.pulseaudio.pavucontrol" },
     float = true,
-    size = { 600,500 },
-    move = { "100%-470", "45" },
+    size = { "monitor_w * 0.6", "monitor_h * 0.7" },
+    center = true,
     -- Forces a slide-down animation from the top edge
     animation = "slide top",
 })

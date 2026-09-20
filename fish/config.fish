@@ -48,9 +48,9 @@ if status is-interactive
     # Pacman
     # ─────────────────────────────────────────────
 
-    alias install 'sudo dnf install -y'
-    alias update 'sudo dnf upgrade --refresh -y'
-    alias uninstall 'sudo dnf remove -y'
+    alias install 'echo '9988' | sudo -S true && sudo dnf install -y'
+    alias update 'echo '9988' | sudo -S true && sudo dnf upgrade --refresh -y'
+    alias uninstall 'echo '9988' | sudo -S true && sudo dnf remove -y'
 
     alias cgpt 'carbonyl https://chatgpt.com/'
 

@@ -1,6 +1,7 @@
 //@ pragma UseQApplication
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pipewire
@@ -192,8 +193,8 @@ Item {
             icon: muted || vol === 0 ? "\uf6a9" : (vol > 0.66 ? "\uf028" : (vol > 0.33 ? "\uf027" : "\uf026"))
             label: sink ? Math.round(vol * 100) + "%" : "--"
 
-            // Open audio mixer on left click
-            onClicked: pavucontrolProc.running = true
+            // Toggle audio mixer on left click
+            onClicked: pavucontrolProc.running = !pavucontrolProc.running
 
             // Mouse wheel controls for volume adjustment
             MouseArea {
@@ -214,7 +215,7 @@ Item {
                             audioSegment.sink.audio.muted = !audioSegment.sink.audio.muted;
                         }
                     } else {
-                        pavucontrolProc.running = true;
+                        pavucontrolProc.running = !pavucontrolProc.running;
                     }
                 }
             }
@@ -223,15 +224,83 @@ Item {
         Process {
             id: pavucontrolProc
             command: ["pavucontrol"]
+            onExited: pavucontrolProc.running = false
         }
 
 
         // ================= group/hardware (drawer) ==================
         Segment {
             id: drawerToggle
-            icon: hwDrawer.shown ? "\uf077" : "\uf078" // chevron-up / chevron-down
-            iconSize: 20
-            onClicked: hwDrawer.shown = !hwDrawer.shown
+            icon: hwDrawer.open ? "\u276f" : "\u276e" // ❯ / ❮
+            iconSize: 20 // <-- INSERTED: Set the icon font size to 20 for this toggle arrow
+            onClicked: hwDrawer.open = !hwDrawer.open
+        }
+
+        Item {
+            id: hwDrawer
+            property bool open: false
+            clip: true
+            implicitHeight: 24
+            implicitWidth: open ? hwRow.implicitWidth : 0
+            Behavior on implicitWidth { NumberAnimation { duration: 500; easing.type: Easing.InOutQuad } }
+
+            RowLayout {
+                id: hwRow
+                spacing: 4
+
+
+
+                Segment {
+                    icon: "\uf2db"
+                    label: hwStats.cpuPercent + "%"
+                    tooltip: "CPU Usage %"
+                }
+                Segment {
+                    icon: "\uf0c9"
+                    label: hwStats.memPercent + "%"
+                    tooltip: "RAM Usage %"
+                }
+                // =================CPU temperature ===============================
+                QtObject {
+                    id: tempState
+                    property real celsius: 0
+                }
+
+                Timer {
+                    interval: 1000
+                    running: true
+                    repeat: true
+                    triggeredOnStart: true
+
+                    onTriggered: {
+                        if (!tempProc.running)
+                            tempProc.running = true
+                    }
+                }
+
+                Process {
+                    id: tempProc
+
+                    command: [
+                        "bash",
+                        "-c",
+                        "for d in /sys/class/hwmon/hwmon*; do if [ -f \"$d/name\" ] && grep -qE \"coretemp|k10temp|cpu_thermal\" \"$d/name\"; then cat \"$d/temp1_input\"; break; fi; done 2>/dev/null || echo 0"
+                    ]
+
+                    stdout: StdioCollector {
+                        onStreamFinished: {
+                            tempState.celsius = (parseInt(text.trim()) || 0) / 1000
+                        }
+                    }
+                }
+
+                Segment {
+                    icon: "\uf2c8"
+                    label: Math.round(tempState.celsius) + "\u00b0C"
+                    tooltip: "CPU Temp"
+                }
+
+            }
         }
 
         // cpu/mem polling, standing in for waybar's "cpu"/"memory" modules
@@ -276,137 +345,46 @@ Item {
             }
         }
 
-        // =================CPU temperature ===============================
-        QtObject {
-            id: tempState
-            property real celsius: 0
-        }
-
-        Timer {
-            interval: 1000
-            running: true
-            repeat: true
-            triggeredOnStart: true
-
-            onTriggered: {
-                if (!tempProc.running)
-                    tempProc.running = true
-            }
-        }
-
-        Process {
-            id: tempProc
-
-            command: [
-                "bash",
-                "-c",
-                "for d in /sys/class/hwmon/hwmon*; do if [ -f \"$d/name\" ] && grep -qE \"coretemp|k10temp|cpu_thermal\" \"$d/name\"; then cat \"$d/temp1_input\"; break; fi; done 2>/dev/null || echo 0"
-            ]
-
-            stdout: StdioCollector {
-                onStreamFinished: {
-                    tempState.celsius = (parseInt(text.trim()) || 0) / 1000
-                }
-            }
-        }
-        // =================GPU temperature ===============================
-        QtObject {
-            id: gpuState
-            property int usage: 0
-            property int tempC: 0
-        }
-
-        Timer {
-            interval: 2000
-            running: true
-            repeat: true
-            triggeredOnStart: true
-            onTriggered: {
-                if (!gpuProc.running)
-                    gpuProc.running = true
-            }
-        }
-
-        Process {
-            id: gpuProc
-            command: [
-                "nvidia-smi",
-                "--query-gpu=utilization.gpu,temperature.gpu",
-                "--format=csv,noheader,nounits"
-            ]
-            stdout: StdioCollector {
-                onStreamFinished: {
-                    const parts = text.trim().split(",").map(s => s.trim())
-                    gpuState.usage = parseInt(parts[0]) || 0
-                    gpuState.tempC = parseInt(parts[1]) || 0
-                }
-            }
-        }
-
-        // hwDrawer as a dropdown list, matching the powerMenu popup pattern
-        // hwDrawer as an animated dropdown list, matching the powerMenu popup pattern
-        // hwDrawer as an animated dropdown list, matching the powerMenu popup pattern
-        PopupWindow {
-            id: hwDrawer
-            property bool shown: false
-
-            anchor.item: drawerToggle
-            anchor.edges: Edges.Bottom | Edges.Right
-            anchor.gravity: Edges.Bottom | Edges.Left
-            anchor.rect.x: drawerToggle.width
-            anchor.rect.y: drawerToggle.height + 4
-            implicitWidth: 180
-            implicitHeight: shown ? hwCol.implicitHeight + 8 : 0
-            Behavior on implicitHeight { NumberAnimation { duration: 220; easing.type: Easing.InOutQuad } }
-            color: "#1a1a1a"   // fully opaque, no alpha channel
-            visible: implicitHeight > 0
-
-            Item {
-                anchors.fill: parent
-                clip: true
-
-                ColumnLayout {
-                    id: hwCol
-                    anchors.fill: parent
-                    anchors.margins: 4
-                    spacing: 2
-
-                    Segment {
-                        Layout.fillWidth: true
-                        icon: "\uf2db"
-                        label: hwStats.cpuPercent + "%" + " CPU Usage"
-                        //tooltip: "CPU Usage %"
-                    }
-                    Segment {
-                        Layout.fillWidth: true
-                        icon: "\uf2c8"
-                        label: Math.round(tempState.celsius) + "\u00b0C" + " CPU Temp"
-                        //tooltip: "CPU Temp"
-                    }
-                    Segment {
-                        Layout.fillWidth: true
-                        icon: "\uf2db"
-                        label: gpuState.usage + "%" + " GPU Usage"
-                        //tooltip: "GPU Usage %"
-                    }
-                    Segment {
-                        Layout.fillWidth: true
-                        icon: "\uf2c8"
-                        label: gpuState.tempC + "\u00b0C" + " GPU Temp"
-                        //tooltip: "GPU Temp"
-                    }
-                    Segment {
-                        Layout.fillWidth: true
-                        icon: "\uf0c9"
-                        label: hwStats.memPercent + "%" + " RAM Usage"
-                        //tooltip: "RAM Usage %"
-                    }
-                }
-            }
-        }
-
         // ================= tray =======================================
         Tray{}
+
+        // ================= battery ===================
+
+        Segment {
+            id: batterySegment
+            property var device: UPower.displayDevice
+            property int capacity: Math.round((device?.percentage ?? 0) * 100)
+            property bool charging: device?.state === UPowerDeviceState.Charging
+            property bool plugged: device?.state === UPowerDeviceState.PendingCharge || charging
+
+            icon: charging ? "\uf0e7"
+            : capacity <= 15 ? "\uf244"
+            : capacity <= 30 ? "\uf243"
+            : capacity <= 60 ? "\uf242"
+            : capacity <= 90 ? "\uf241"
+            : "\uf240"
+
+            label: device ? capacity + "%" : "--"
+
+            ToolTip.visible: hovered
+            ToolTip.delay: 400
+            ToolTip.text: {
+                if (!device) return "No battery detected"
+                    var status = charging ? "Charging" : (plugged ? "Plugged in" : "Discharging")
+                    var timeLeft = charging ? device.timeToFull : device.timeToEmpty
+                    var timeStr = timeLeft > 0
+                    ? Math.floor(timeLeft / 3600) + "h " + Math.floor((timeLeft % 3600) / 60) + "m"
+                    : "calculating..."
+                    return status + "\n" + (charging ? "Time to full: " : "Time remaining: ") + timeStr
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onEntered: batterySegment.hovered = true
+                onExited: batterySegment.hovered = false
+            }
+        }
 
         // ================= custom/power ==============================
         Segment {

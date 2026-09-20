@@ -1,4 +1,4 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR __fish_initialized:4300
-SETUVAR fish_user_paths:/home/iusearchbtw/\x2elocal/bin
+SETUVAR fish_user_paths:/usr/lib64/qt6/bin\x1e/home/iusearchbtw/\x2elocal/bin
