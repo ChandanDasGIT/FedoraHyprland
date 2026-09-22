@@ -1,0 +1,36 @@
+[Added Associations]
+text/x-csrc=org.kde.kate.desktop;
+text/css=org.kde.kate.desktop;
+text/plain=org.kde.kate.desktop;org.lite_xl.lite_xl.desktop;
+application/x-shellscript=org.kde.kate.desktop;kitty-open.desktop;
+application/vnd.microsoft.portable-executable=wine.desktop;com.usebottles.bottles.desktop;
+application/x-msdownload=wine.desktop;
+image/jpeg=org.gnome.gThumb.desktop;
+application/x-zerosize=org.kde.kate.desktop;org.lite_xl.lite_xl.desktop;
+application/x-bat=wine.desktop;
+application/vnd.efi.img=org.gnome.FileRoller.desktop;
+application/x-xz-compressed-tar=xarchiver.desktop;
+application/x-7z-compressed=xarchiver.desktop;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=openoffice4-writer.desktop;
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=wine-extension-xlsx.desktop;openoffice4-calc.desktop;
+video/mp4=com.github.taiko2k.tauonmb.desktop;vlc.desktop;
+application/zip=xarchiver.desktop;
+text/x-qml=org.kde.kate.desktop;org.lite_xl.lite_xl.desktop;
+audio/mpeg=org.kde.elisa.desktop;com.github.taiko2k.tauonmb.desktop;
+image/png=org.kde.gwenview.desktop;org.gnome.gThumb.desktop;
+text/x-lua=org.kde.kate.desktop;
+
+[Default Applications]
+inode/directory=thunar.desktop
+x-scheme-handler/file=thunar.desktop
+application/x-zerosize=org.kde.kate.desktop
+application/vnd.efi.img=org.gnome.FileRoller.desktop
+application/x-xz-compressed-tar=xarchiver.desktop
+application/x-7z-compressed=xarchiver.desktop
+application/zip=xarchiver.desktop
+video/mp4=vlc.desktop
+text/x-qml=org.kde.kate.desktop
+image/png=org.gnome.gThumb.desktop
+text/x-lua=org.kde.kate.desktop
+text/plain=org.kde.kate.desktop
+audio/mpeg=com.github.taiko2k.tauonmb.desktop

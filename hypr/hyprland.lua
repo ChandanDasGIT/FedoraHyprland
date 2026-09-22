@@ -54,6 +54,7 @@ local menu        = "fuzzel"
 
 hl.on("hyprland.start", function ()
 hl.exec_cmd("quickshell") --Quickshell 0.3.1 (revision , distributed by Unset)
+hl.exec_cmd("wl-clip-persist --clipboard regular")
 hl.exec_cmd("awww-daemon & sleep 0.2 && awww restore")
 hl.exec_cmd("wl-paste --type text --watch cliphist store")
 --hl.exec_cmd("/home/iusearchbtw/.config/waybar/change_wallpaper.sh")
@@ -69,7 +70,6 @@ hl.exec_cmd("pactl set-default-sink easyeffects_sink")
 --hl.exec_cmd("hyprpaper")
 hl.exec_cmd("nwg-dock-hyprland -d -r -p bottom")
 hl.exec_cmd("sh -c 'nautilus & until hyprctl clients | grep -q \"class: org.gnome.Nautilus\"; do sleep 0.2; done; flatpak run com.github.taiko2k.tauonmb & until hyprctl clients | grep -q \"class: tauonmb\"; do sleep 0.2; done'")
---hl.exec_cmd("nautilus '" .. os.getenv("HOME") .. "/Songs' & until hyprctl clients | grep -q 'class: org.gnome.Nautilus'; do sleep 0.2; done; tauon & until hyprctl clients | grep -q 'class: tauonmb'; do sleep 0.2; done; kitty --class kitty-cava -e cava &")
 end)
 
 -- Window rules for workspace10, set up for Music
@@ -169,17 +169,18 @@ hl.config({
         -- Please see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ before you turn this on
         allow_tearing = false,
 
---        layout = "dwindle",
-        layout = "master",
+        layout = "dwindle",
+--        layout = "master",
     },
 
     decoration = {
-        rounding       = 5,
+        rounding       = 2,
         rounding_power = 2,
 
         -- Change transparency of focused and unfocused windows
-        active_opacity   = 1.0,
-        inactive_opacity = 0.75,
+        active_opacity = 0.85,
+        inactive_opacity = 0.85,
+        fullscreen_opacity = 1.0,
 
         shadow = {
             enabled      = true,
@@ -201,20 +202,51 @@ hl.config({
     },
 })
 
+--------------------------
+----transparency Rules----
+--------------------------
+-- Dedicated media player windows
+hl.window_rule({
+    match = { class = "^(mpv)$" },
+               opacity = "1.0 override 1.0 override",
+})
+
+hl.window_rule({
+    match = { class = "^(vlc)$" },
+               opacity = "1.0 override 1.0 override",
+})
+
+-- Browser Picture-in-Picture windows (Firefox / Chromium)
+hl.window_rule({
+    match = { title = "^(Picture-in-Picture)$" },
+               opacity = "1.0 override 1.0 override",
+})
+
+-- Force 100% opacity whenever ANY window is fullscreened (e.g., full-window YouTube)
+hl.window_rule({
+    match = { fullscreen = 1 },
+    opacity = "1.0 override 1.0 override",
+})
+
+hl.window_rule({
+    match = { title = ".*(YouTube|Twitch).*" },
+               opacity = "1.0 override 1.0 override",
+})
+
 ----------------------
 ----Layout Configs----
 ----------------------
 -- See https://wiki.hypr.land/Configuring/Layouts/Dwindle-Layout/ for more
 hl.config({
     dwindle = {
-        preserve_split = true, -- You probably want this
-        force_split = 2,
-        use_active_for_splits = false,
-        smart_split = false,
-        smart_resizing = true,
-        permanent_direction_override = true,
-        split_bias = 0,
-        default_split_ratio = 1
+        preserve_split = true, --You probably want this
+        force_split = 2,                 -- Always split new windows to the right or bottom
+            use_active_for_splits = true,    -- Splits originate from the active window, not the cursor
+            smart_split = false,             -- Prevents cursor triangle position from overriding the split direction
+            smart_resizing = true,
+            permanent_direction_override = true,
+            split_bias = 0,
+            default_split_ratio = 1.0,
     },
 })
 
@@ -407,6 +439,7 @@ hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("qs ipc call applauncher toggle")
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("qs ipc call notifications toggle"))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("qs ipc call workspaces toggle"))
 hl.bind(ctrlMod .. " + SHIFT + Space", hl.dsp.exec_cmd("quickshell ipc call fileSearch toggle"))
+hl.bind(ctrlMod .. " + SHIFT + W", hl.dsp.exec_cmd("qs ipc call wallpaperSelector toggle"))
 
 -- Toggle back and forth between the current and previously used workspace
 hl.bind(mainMod .. " + ESCAPE", hl.dsp.focus({ workspace = "previous" }))
@@ -438,7 +471,7 @@ hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 --hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("nwg-drawer"))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("nwg-drawer"))
 --hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("kate"))
-hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("test -f /tmp/kate_lock || (touch /tmp/kate_lock && kate && sleep 0.5 && rm -f /tmp/kate_lock)"))
+hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("lite-xl -n"))
 hl.bind(mainMod .. " + F", hl.dsp.exec_cmd("firefox"))
 -- Clipboard History Manager (requires cliphist & rofi/wofi/fuzzel)
 hl.bind(mainMod .. " + ALT + V", hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu --width=80 --lines=12 --match-mode=fuzzy | cliphist decode | wl-copy"))
