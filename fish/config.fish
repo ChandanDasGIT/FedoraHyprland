@@ -10,8 +10,8 @@ if status is-interactive
     # Fish doesn't use PS1 — define a prompt function instead
     # Uses fish's built-in $hostname variable instead of the external `hostname` command
     function fish_prompt
-        echo -n '['(whoami)'@'$hostname' '(prompt_pwd -D 1)']\$ '
-    end
+    echo -e (whoami)'@'$hostname' '(prompt_pwd -d 0)'\n~> '
+end
 
     #source ~/.config/bash/bashrc  (fish equivalent, if needed, would be its own .fish file)
 
