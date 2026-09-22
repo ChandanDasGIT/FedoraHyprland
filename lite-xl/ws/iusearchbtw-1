@@ -1,0 +1,1 @@
+return { path = "/home/iusearchbtw", documents = {["views"]={[1]={["scroll"]={["y"]=0,["x"]=0},["selection"]={[1]=39,[2]=42,[3]=39,[4]=42},["active"]=true,["text"]=false,["filename"]=".config/lite-xl/init.lua",["type"]="doc"}},["active_view"]=1,["type"]="leaf"}, directories = {} }

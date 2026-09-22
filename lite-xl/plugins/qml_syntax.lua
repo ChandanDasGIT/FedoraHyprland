@@ -1,0 +1,57 @@
+-- mod-version:3
+local syntax = require "core.syntax"
+
+syntax.add {
+  name = "QML",
+  files = { "%.qml$" },
+  comment = "//",
+  patterns = {
+    { pattern = "//.-\n",               type = "comment" },
+    { pattern = { "/%*", "%*/" },       type = "comment" },
+    { pattern = { '"', '"', '\\' },     type = "string"  },
+    { pattern = { "'", "'", '\\' },     type = "string"  },
+    { pattern = { "`", "`", '\\' },     type = "string"  },
+    { pattern = "-?0x[%da-fA-F]+",      type = "number"  },
+    { pattern = "-?%d+[%d%.eE]*f?",     type = "number"  },
+    { pattern = "-?%.?%d+f?",           type = "number"  },
+    { pattern = "[%+%-=/%*%^%%<>!~|&:]",type = "operator" },
+    -- Matches Capitalized Identifiers (Item, Rectangle, ListView, Scope, etc.)
+    { pattern = "%f[%a]%u[%w_]*",       type = "keyword2" },
+    -- Matches signal handlers like onClicked, onTextChanged
+    { pattern = "on%u[%w_]*",           type = "function" },
+    -- Matches any regular word / identifier
+    { pattern = "[%a_][%w_]*",          type = "symbol" },
+  },
+  symbols = {
+    ["import"]     = "keyword",
+    ["property"]   = "keyword",
+    ["readonly"]   = "keyword",
+    ["required"]   = "keyword",
+    ["signal"]     = "keyword",
+    ["function"]   = "keyword",
+    ["alias"]      = "keyword",
+    ["as"]         = "keyword",
+    ["id"]         = "keyword",
+    ["anchors"]    = "keyword",
+    ["var"]        = "keyword2",
+    ["let"]        = "keyword2",
+    ["const"]      = "keyword2",
+    ["int"]        = "keyword2",
+    ["bool"]       = "keyword2",
+    ["real"]       = "keyword2",
+    ["double"]     = "keyword2",
+    ["string"]     = "keyword2",
+    ["color"]      = "keyword2",
+    ["url"]        = "keyword2",
+    ["list"]       = "keyword2",
+    ["true"]       = "literal",
+    ["false"]      = "literal",
+    ["null"]       = "literal",
+    ["undefined"]  = "literal",
+    ["if"]         = "keyword",
+    ["else"]       = "keyword",
+    ["for"]        = "keyword",
+    ["while"]      = "keyword",
+    ["return"]     = "keyword",
+  },
+}

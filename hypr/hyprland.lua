@@ -105,10 +105,11 @@ hl.window_rule({
 hl.window_rule({
     name = "focus-on-activate",
     match = {
-        class = ".*", -- or specific apps: "^(code|gedit|vlc)$"
+        class = ".*",
     },
-    focus_on_activate = true,
+    focus_on_activate = false,
 })
+
 
 
 -------------------------------
@@ -400,12 +401,13 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 local altMod = "ALT"
 local ctrlMod = "CTRL"
 
---hl.bind(altMod .. " + TAB", hl.dsp.focus({ workspace = "e+1" }))
+--QUICKSHELL bindings
 hl.bind(mainMod .. " + TAB", hl.dsp.exec_cmd("qs ipc call dock toggle"))
 hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("qs ipc call applauncher toggle"))
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("qs ipc call notifications toggle"))
-
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("qs ipc call workspaces toggle"))
+hl.bind(ctrlMod .. " + SHIFT + Space", hl.dsp.exec_cmd("quickshell ipc call fileSearch toggle"))
+
 -- Toggle back and forth between the current and previously used workspace
 hl.bind(mainMod .. " + ESCAPE", hl.dsp.focus({ workspace = "previous" }))
 
@@ -419,7 +421,14 @@ hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd([[sh -c 'mkdir -p ~/Pictures && grim ~/Pictures/Screenshot_$(date +%Y-%m-%d_%H-%M-%S).png']]))
 hl.bind(mainMod .. " + SHIFT + Print", hl.dsp.exec_cmd([[sh -c 'mkdir -p ~/Pictures && grim -g "$(slurp)" ~/Pictures/Screenshot_$(date +%Y-%m-%d_%H-%M-%S).png']]))
+--screenshot
 hl.bind(ctrlMod .. " + Print", hl.dsp.exec_cmd([[sh -c 'grim -g "$(slurp)" - | wl-copy']]))
+--OCR
+hl.bind(
+    ctrlMod .. " + SHIFT + Print",
+    hl.dsp.exec_cmd([[sh -c 'grim -g "$(slurp)" - | tesseract stdin stdout -l eng 2>/dev/null | wl-copy && notify-send -a "OCR" "Text Extracted" "$(wl-paste)"']])
+)
+
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 --hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 --hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
