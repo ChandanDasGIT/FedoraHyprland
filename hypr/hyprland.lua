@@ -71,46 +71,8 @@ hl.exec_cmd([[sh -c "fd --type d --exclude '\$RECYCLE.BIN' --exclude 'System Vol
 --hl.exec_cmd("hyprpaper")
 hl.exec_cmd("nwg-dock-hyprland -d -r -p bottom")
 --hl.exec_cmd("sh -c 'nautilus & until hyprctl clients | grep -q \"class: org.gnome.Nautilus\"; do sleep 0.2; done; flatpak run com.github.taiko2k.tauonmb & until hyprctl clients | grep -q \"class: tauonmb\"; do sleep 0.2; done'")
-hl.exec_cmd([[sh -c 'kitty --class kitty-yazi yazi "/mnt/chandan/Flac Music" & until hyprctl clients | grep -q "class: kitty-yazi"; do sleep 0.2; done; flatpak run com.github.taiko2k.tauonmb & until hyprctl clients | grep -q "class: tauonmb"; do sleep 0.2; done']])
+hl.exec_cmd([[sh -c 'kitty --class kitty-yazi yazi "/mnt/chandan/Flac Music" & until hyprctl clients | grep -q "class: kitty-yazi"; do sleep 0.2; done; fooyin & until hyprctl clients | grep -q "class: org.fooyin.fooyin"; do sleep 0.2; done']])
 end)
-
--- Window rules for workspace10, set up for Music
-hl.window_rule({
-    match = {
-        class = "^(kitty-yazi)$",
-    },
-    workspace = "10 silent",
-})
-
-hl.window_rule({
-    match = {
-        class = "com.github.taiko2k.tauonmb",
-    },
-    workspace = "10 silent",
-})
-
-hl.window_rule({
-    match = {
-        class = "^(kitty-cava)$",
-    },
-    workspace = "10 silent",
-})
---More window_rule at the bottom
----[[
-hl.window_rule({
-    match = {
-        class = "^(carbonyl-browser)$",
-    },
-    workspace = "9 silent",
-}) --]]
-
-hl.window_rule({
-    name = "focus-on-activate",
-    match = {
-        class = ".*",
-    },
-    focus_on_activate = false,
-})
 
 
 
@@ -204,41 +166,7 @@ hl.config({
     },
 })
 
---------------------------
-----transparency Rules----
---------------------------
--- Dedicated media player windows
-hl.window_rule({
-    match = { class = "^(mpv)$" },
-               opacity = "1.0 override 1.0 override",
-})
 
-hl.window_rule({
-    match = { class = "^(vlc)$" },
-               opacity = "1.0 override 1.0 override",
-})
-
--- Browser Picture-in-Picture windows (Firefox / Chromium)
-hl.window_rule({
-    match = { title = "^(Picture-in-Picture)$" },
-               opacity = "1.0 override 1.0 override",
-})
-
--- Force 100% opacity whenever ANY window is fullscreened (e.g., full-window YouTube)
-hl.window_rule({
-    match = { fullscreen = 1 },
-    opacity = "1.0 override 1.0 override",
-})
-
-hl.window_rule({
-    match = { title = ".*(YouTube|Twitch).*" },
-               opacity = "1.0 override 1.0 override",
-})
-
-hl.window_rule({
-    match = { class = "^(discord|vesktop|WebCord)$" },
-               opacity = "1.0 override 1.0 override",
-})
 ----------------------
 ----Layout Configs----
 ----------------------
@@ -487,10 +415,10 @@ hl.bind(mainMod .. " + ALT + V", hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu
 hl.bind(mainMod .. " + ALT + Space", hl.dsp.exec_cmd("nwg-dock-hyprland"))
 -- Color Picker (requires hyprpicker)
 hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"))
--- Media playback: omits '-p tauon' so playerctl controls the active player
-hl.bind(ctrlMod .. " + SPACE", hl.dsp.exec_cmd("playerctl play-pause"))
-hl.bind(ctrlMod .. " + LEFT", hl.dsp.exec_cmd("playerctl previous"))
-hl.bind(ctrlMod .. " + RIGHT", hl.dsp.exec_cmd("playerctl next"))
+-- Media playback: specifically targets fooyin
+hl.bind(ctrlMod .. " + SPACE", hl.dsp.exec_cmd("playerctl -p fooyin play-pause"))
+hl.bind(ctrlMod .. " + LEFT",  hl.dsp.exec_cmd("playerctl -p fooyin previous"))
+hl.bind(ctrlMod .. " + RIGHT", hl.dsp.exec_cmd("playerctl -p fooyin next"))
 
 -- Master system volume (WirePlumber / PipeWire)
 hl.bind(ctrlMod .. " + UP", hl.dsp.exec_cmd("wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"))
@@ -615,6 +543,86 @@ hl.window_rule({
     size  = { 800, 600 },
 })
 
+-- Window rules for workspace10, set up for Music
+hl.window_rule({
+    match = {
+        class = "^(kitty-yazi)$",
+    },
+    workspace = "10 silent",
+})
+
+hl.window_rule({
+    match = {
+        class = "com.github.taiko2k.tauonmb",
+    },
+    workspace = "10 silent",
+})
+
+hl.window_rule({
+    match = {
+        class = ".*fooyin.*",
+    },
+    workspace = "10 silent",
+})
+
+hl.window_rule({
+    match = {
+        class = "^(kitty-cava)$",
+    },
+    workspace = "10 silent",
+})
+--More window_rule at the bottom
+---[[
+hl.window_rule({
+    match = {
+        class = "^(carbonyl-browser)$",
+    },
+    workspace = "9 silent",
+}) --]]
+
+hl.window_rule({
+    name = "focus-on-activate",
+    match = {
+        class = ".*",
+    },
+    focus_on_activate = false,
+})
+
+--------------------------
+----transparency Rules----
+--------------------------
+-- Dedicated media player windows
+hl.window_rule({
+    match = { class = "^(mpv)$" },
+               opacity = "1.0 override 1.0 override",
+})
+
+hl.window_rule({
+    match = { class = "^(vlc)$" },
+               opacity = "1.0 override 1.0 override",
+})
+
+-- Browser Picture-in-Picture windows (Firefox / Chromium)
+hl.window_rule({
+    match = { title = "^(Picture-in-Picture)$" },
+               opacity = "1.0 override 1.0 override",
+})
+
+-- Force 100% opacity whenever ANY window is fullscreened (e.g., full-window YouTube)
+hl.window_rule({
+    match = { fullscreen = 1 },
+    opacity = "1.0 override 1.0 override",
+})
+
+hl.window_rule({
+    match = { title = ".*(YouTube|Twitch).*" },
+               opacity = "1.0 override 1.0 override",
+})
+
+hl.window_rule({
+    match = { class = "^(discord|vesktop|WebCord)$" },
+               opacity = "1.0 override 1.0 override",
+})
 
 -- HyprMod managed settings
 require("hyprland-gui")
