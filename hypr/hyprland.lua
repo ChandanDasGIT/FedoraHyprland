@@ -65,17 +65,19 @@ hl.exec_cmd("wl-paste --type image --watch cliphist store")
 hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
 hl.exec_cmd("easyeffects --gapplication-service")
 hl.exec_cmd("pactl set-default-sink easyeffects_sink")
+hl.exec_cmd([[sh -c "fd --type d --exclude '\$RECYCLE.BIN' --exclude 'System Volume Information' . /mnt/study /mnt/chandan >/dev/null 2>&1"]])
 --hl.exec_cmd("waybar & swaync")
 --hl.exec_cmd("swaync")
 --hl.exec_cmd("hyprpaper")
 hl.exec_cmd("nwg-dock-hyprland -d -r -p bottom")
-hl.exec_cmd("sh -c 'nautilus & until hyprctl clients | grep -q \"class: org.gnome.Nautilus\"; do sleep 0.2; done; flatpak run com.github.taiko2k.tauonmb & until hyprctl clients | grep -q \"class: tauonmb\"; do sleep 0.2; done'")
+--hl.exec_cmd("sh -c 'nautilus & until hyprctl clients | grep -q \"class: org.gnome.Nautilus\"; do sleep 0.2; done; flatpak run com.github.taiko2k.tauonmb & until hyprctl clients | grep -q \"class: tauonmb\"; do sleep 0.2; done'")
+hl.exec_cmd([[sh -c 'kitty --class kitty-yazi yazi "/mnt/chandan/Flac Music" & until hyprctl clients | grep -q "class: kitty-yazi"; do sleep 0.2; done; flatpak run com.github.taiko2k.tauonmb & until hyprctl clients | grep -q "class: tauonmb"; do sleep 0.2; done']])
 end)
 
 -- Window rules for workspace10, set up for Music
 hl.window_rule({
     match = {
-        class = "org.gnome.Nautilus",
+        class = "^(kitty-yazi)$",
     },
     workspace = "10 silent",
 })
@@ -233,6 +235,10 @@ hl.window_rule({
                opacity = "1.0 override 1.0 override",
 })
 
+hl.window_rule({
+    match = { class = "^(discord|vesktop|WebCord)$" },
+               opacity = "1.0 override 1.0 override",
+})
 ----------------------
 ----Layout Configs----
 ----------------------
@@ -384,7 +390,8 @@ hl.config({
 hl.config({
     misc = {
         force_default_wallpaper = 0,    -- Set to 0 or 1 to disable the anime mascot wallpapers
-            disable_hyprland_logo   = true, -- If true disables the random hyprland logo / anime girl background. :(
+        disable_hyprland_logo   = true, -- If true disables the random hyprland logo / anime girl background. :(
+        focus_on_activate       = false,
     },
 })
 
@@ -471,7 +478,7 @@ hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 --hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("nwg-drawer"))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("nwg-drawer"))
 --hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("kate"))
-hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("lite-xl -n"))
+hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("gtk-launch ChaoticNotepad"))
 hl.bind(mainMod .. " + F", hl.dsp.exec_cmd("firefox"))
 -- Clipboard History Manager (requires cliphist & rofi/wofi/fuzzel)
 hl.bind(mainMod .. " + ALT + V", hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu --width=80 --lines=12 --match-mode=fuzzy | cliphist decode | wl-copy"))
@@ -480,12 +487,14 @@ hl.bind(mainMod .. " + ALT + V", hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu
 hl.bind(mainMod .. " + ALT + Space", hl.dsp.exec_cmd("nwg-dock-hyprland"))
 -- Color Picker (requires hyprpicker)
 hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"))
---Tauon Music PLayer Controls
-hl.bind(ctrlMod .. " + SPACE", hl.dsp.exec_cmd("playerctl -p tauon play-pause"))
-hl.bind(ctrlMod .. " + LEFT", hl.dsp.exec_cmd("playerctl -p tauon previous"))
-hl.bind(ctrlMod .. " + RIGHT", hl.dsp.exec_cmd("playerctl -p tauon next"))
-hl.bind(ctrlMod .. " + UP", hl.dsp.exec_cmd("playerctl -p tauon volume 0.05+"))
-hl.bind(ctrlMod .. " + DOWN", hl.dsp.exec_cmd("playerctl -p tauon volume 0.05-"))
+-- Media playback: omits '-p tauon' so playerctl controls the active player
+hl.bind(ctrlMod .. " + SPACE", hl.dsp.exec_cmd("playerctl play-pause"))
+hl.bind(ctrlMod .. " + LEFT", hl.dsp.exec_cmd("playerctl previous"))
+hl.bind(ctrlMod .. " + RIGHT", hl.dsp.exec_cmd("playerctl next"))
+
+-- Master system volume (WirePlumber / PipeWire)
+hl.bind(ctrlMod .. " + UP", hl.dsp.exec_cmd("wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"))
+hl.bind(ctrlMod .. " + DOWN", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"))
 --TO-DO list
 hl.bind(mainMod .. " + X", hl.dsp.exec_cmd("qs ipc call notes toggle"))
 
@@ -547,6 +556,11 @@ for i = 1, 10 do
         suppress_event = "maximize",
     })
     -- suppressMaximizeRule:set_enabled(false)
+    hl.window_rule({
+        name  = "prevent-auto-focus",
+        match = { class = ".*" },
+        no_initial_focus = true,
+    })
 
     hl.window_rule({
         -- Fix some dragging issues with XWayland

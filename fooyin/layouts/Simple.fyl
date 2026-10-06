@@ -1,0 +1,120 @@
+{
+    "Name": "Simple",
+    "Options": {
+        "ApplyWindowSize": true
+    },
+    "Version": 1,
+    "Widgets": [
+        {
+            "SplitterVertical": {
+                "Locked": [
+                    true,
+                    false,
+                    true
+                ],
+                "State": "AAAA/wAAAAEAAAADAAAAHAAAAn0AAAAXAP////8BAAAAAgA=",
+                "Widgets": [
+                    {
+                        "SplitterHorizontal": {
+                            "Locked": [
+                                true,
+                                false,
+                                false,
+                                false
+                            ],
+                            "State": "AAAA/wAAAAEAAAAEAAAAggAABqEAAAA+AAAAHAD/////AQAAAAEA",
+                            "Widgets": [
+                                {
+                                    "PlayerControls": {
+                                        "ShowNext": true,
+                                        "ShowPause": false,
+                                        "ShowPlay": false,
+                                        "ShowPlayPause": true,
+                                        "ShowPrevious": true,
+                                        "ShowRandomTrack": false,
+                                        "ShowStop": true
+                                    }
+                                },
+                                {
+                                    "SeekBar": {
+                                        "ShowLabels": true,
+                                        "ShowPlayedThreshold": false,
+                                        "ShowRemainingTime": false
+                                    }
+                                },
+                                {
+                                    "PlaylistControls": {
+                                    }
+                                },
+                                {
+                                    "VolumeControls": {
+                                        "Mode": 3
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "SplitterHorizontal": {
+                            "Locked": [
+                                true,
+                                false
+                            ],
+                            "State": "AAAA/wAAAAEAAAACAAAAewAAAasA/////wEAAAABAA==",
+                            "Widgets": [
+                                {
+                                    "SplitterVertical": {
+                                        "Locked": [
+                                            false,
+                                            true
+                                        ],
+                                        "State": "AAAA/wAAAAEAAAACAAABfQAAAPEA/////wEAAAACAA==",
+                                        "Widgets": [
+                                            {
+                                                "Dummy": {
+                                                }
+                                            },
+                                            {
+                                                "Dummy": {
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "PlaylistTabs": {
+                                        "CloseOnMiddleClick": false,
+                                        "ExpandTabs": false,
+                                        "ShowAddButton": false,
+                                        "ShowClearButton": false,
+                                        "ShowCloseButton": false,
+                                        "TabPosition": 0,
+                                        "Widgets": [
+                                            {
+                                                "Playlist": {
+                                                    "Columns": "8:132|3|0:2|1|7:2",
+                                                    "HeaderState": "AAAAZXjaY2BgYGVgYPAC4gIgVgLihUCsxQARBwFGIGYCYmYgZgGJ2x/rju1g+q1hf+Gx27/ee9Pst1Q9dF8nUm1/I/B1q9yOIPudM0FgFkgjw/////8DAArdGvA=",
+                                                    "ID": "50fc7b50e3d44a3faa97adeff63906c3",
+                                                    "Preset": 0,
+                                                    "SingleMode": false
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "StatusBar": {
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "WindowSize": {
+        "Height": 833,
+        "Width": 572
+    }
+}

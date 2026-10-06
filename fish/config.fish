@@ -16,12 +16,22 @@ end
     #source ~/.config/bash/bashrc  (fish equivalent, if needed, would be its own .fish file)
 
     alias f 'fastfetch'
+# ─────────────────────────────────────────────
+# Helper: Warm VFS cache in background
+# ─────────────────────────────────────────────
+function __warm_drive_cache --argument-names target_dir
+    if test -d "$target_dir"
+        # Traverses directories asynchronously to populate the dentry cache
+        # so SearchEngine.qml / fd results appear immediately
+        fd --type d --exclude '$RECYCLE.BIN' --exclude 'System Volume Information' . "$target_dir" >/dev/null 2>&1 &
+        disown
+    end
+end
 
-    # ─────────────────────────────────────────────
-    # Mount Chandan and Study Drive
-    # ─────────────────────────────────────────────
-
-    function mountd --description 'Interactively mount study and/or chandan NTFS drives'
+# ─────────────────────────────────────────────
+# Mount Chandan and Study Drive
+# ─────────────────────────────────────────────
+function mountd --description 'Interactively mount study and/or chandan NTFS drives'
     echo "Which drive would you like to mount?"
     echo "  1) study (/dev/sda1 -> /mnt/study)"
     echo "  2) chandan (/dev/sda2 -> /mnt/chandan)"
@@ -34,35 +44,45 @@ end
     echo "  2) Read and Write (rw)"
     read -P "Select mode [1-2]: " mode_choice
 
-    # Determine mount flags
+    set -l uid (id -u)
+    set -l gid (id -g)
     set -l mount_opts ""
     set -l mode_label ""
+
     switch $mode_choice
         case 1
-            set mount_opts "ro"
+            # User ownership + ro prevents permission errors and ensures zero dirty-bit risk
+            set mount_opts "ro,uid=$uid,gid=$gid,fmask=0022,dmask=0022"
             set mode_label "Read-Only"
         case 2
-            set mount_opts "rw,uid="(id -u)",gid="(id -g)",fmask=0022,dmask=0022"
+            # windows_names prevents creating filenames invalid in Windows 11
+            set mount_opts "rw,uid=$uid,gid=$gid,fmask=0022,dmask=0022,windows_names"
             set mode_label "Read/Write"
         case '*'
             echo "Invalid mode selected. Aborting." >&2
             return 1
     end
 
-    # Mount based on target selection
+    # Ensure mount points exist
+    sudo mkdir -p /mnt/study /mnt/chandan
+
     switch $drive_choice
         case 1
             if sudo mount -t ntfs3 -o $mount_opts /dev/sda1 /mnt/study
                 echo "Successfully mounted /mnt/study ($mode_label)"
+                __warm_drive_cache /mnt/study
             else
                 echo "Failed to mount /mnt/study" >&2
             end
+
         case 2
             if sudo mount -t ntfs3 -o $mount_opts /dev/sda2 /mnt/chandan
                 echo "Successfully mounted /mnt/chandan ($mode_label)"
+                __warm_drive_cache /mnt/chandan
             else
                 echo "Failed to mount /mnt/chandan" >&2
             end
+
         case 3
             set -l sda1_status 0
             set -l sda2_status 0
@@ -72,20 +92,22 @@ end
 
             if test $sda1_status -eq 0 -a $sda2_status -eq 0
                 echo "Successfully mounted /mnt/study and /mnt/chandan ($mode_label)"
+                __warm_drive_cache /mnt/study
+                __warm_drive_cache /mnt/chandan
             else
                 echo "One or more mounts failed." >&2
             end
+
         case '*'
             echo "Invalid drive choice. Aborting." >&2
             return 1
-        end
     end
+end
 
-    # ─────────────────────────────────────────────
-    # Unmount Chandan and Study Drive
-    # ─────────────────────────────────────────────
-
-    function unmountd --description 'Interactively unmount study and/or chandan NTFS drives'
+# ─────────────────────────────────────────────
+# Unmount Chandan and Study Drive
+# ─────────────────────────────────────────────
+function unmountd --description 'Interactively unmount study and/or chandan NTFS drives'
     echo "Which drive would you like to unmount?"
     echo "  1) study (/mnt/study)"
     echo "  2) chandan (/mnt/chandan)"
@@ -113,7 +135,6 @@ end
             set -l study_ok 0
             set -l chandan_ok 0
 
-            # Attempt unmounts individually to track exact status
             sudo umount /mnt/study; and set study_ok 1
             sudo umount /mnt/chandan; and set chandan_ok 1
 
@@ -133,9 +154,8 @@ end
         case '*'
             echo "Invalid selection. Aborting." >&2
             return 1
-        end
     end
-
+end
     # ─────────────────────────────────────────────
     # Monitor input
     # ─────────────────────────────────────────────
