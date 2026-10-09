@@ -1,0 +1,130 @@
+{
+    "Name": "myLayout",
+    "Options": {
+        "ApplyTheme": true,
+        "ApplyWindowSize": true,
+        "ThemeOptions": 3
+    },
+    "Theme": "AAAAAQAAAAAAAAAAAAAAGABDAGwAYQBzAHMAaQBjACAARABhAHIAawEAAAAZAAAABQAAAAAB///m5ujo6+sAAAAAAAEAAAAAAf//cnJ3d39/AAAAAAAFAAAAAQH//yQkJycsLAAAAAAABQAAAAIB//9KSlFRW1sAAAAAAAUAAAADAf//Nzc9PUVFAAAAAAAFAAAABAH//xQUFxcbGwAAAAAABQAAAAUB//8dHSEhJiYAAAAAAAUAAAAGAf//5ubo6OvrAAAAAAABAAAABgH//3Jyd3d/fwAAAAAABQAAAAcB/////wAAAAAAAAAAAAUAAAAIAf//5ubo6OvrAAAAAAABAAAACAH//3Jyd3d/fwAAAAAABQAAAAkB//8XFxoaHx8AAAAAAAUAAAAKAf//ICAkJCoqAAAAAAAFAAAACwH//wgICgoNDQAAAAAABQAAAAwB//8nJ2xsnp4AAAAAAAEAAAAMAf//NDQ5OUFBAAAAAAAFAAAADQH//////////wAAAAAAAQAAAA0B//9ycnd3f38AAAAAAAUAAAAOAf//Skqjo9/fAAAAAAAFAAAADwH//5yceHjY2AAAAAAABQAAABAB//8mJisrMjIAAAAAAAUAAAASAf//8/P19ff3AAAAAAAFAAAAEwH//yAgJCQqKgAAAAAABQAAABQB//97e4KCjIwAAAAAAAA=",
+    "Version": 1,
+    "Widgets": [
+        {
+            "SplitterVertical": {
+                "State": "AAAA/wAAAAEAAAACAAAC9gAAAB8A/////wEAAAACAA==",
+                "Widgets": [
+                    {
+                        "SplitterVertical": {
+                            "State": "AAAA/wAAAAEAAAACAAAC7wAAACYA/////wEAAAACAA==",
+                            "Widgets": [
+                                {
+                                    "Playlist": {
+                                        "Columns": "8:132|3|0:2|1|7:2",
+                                        "HeaderState": "AAAAZXjaY2BgYGVgYFAE4otArAOlzRkg4iDACMRMQMwMxCwgcft1OwJft8rtsL8BpoLst1Q9dF8nUg3n75wJArNAGhn+////HwAkzxra",
+                                        "ID": "a3c152d8eec840508dd09b9a19e624ca",
+                                        "Preset": 0,
+                                        "SingleMode": false
+                                    }
+                                },
+                                {
+                                    "SplitterHorizontal": {
+                                        "State": "AAAA/wAAAAEAAAACAAAAkQAAAioA/////wEAAAABAA==",
+                                        "Widgets": [
+                                            {
+                                                "PlayerControls": {
+                                                    "ShowNext": true,
+                                                    "ShowPause": false,
+                                                    "ShowPlay": false,
+                                                    "ShowPlayPause": true,
+                                                    "ShowPrevious": true,
+                                                    "ShowRandomTrack": false,
+                                                    "ShowStop": true
+                                                }
+                                            },
+                                            {
+                                                "SeekBar": {
+                                                    "ShowLabels": true,
+                                                    "ShowPlayedThreshold": false,
+                                                    "ShowRemainingTime": false
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "SplitterHorizontal": {
+                            "State": "AAAA/wAAAAEAAAACAAAAZgAAAcAA/////wEAAAABAA==",
+                            "Widgets": [
+                                {
+                                    "PlaylistControls": {
+                                    }
+                                },
+                                {
+                                    "SplitterHorizontal": {
+                                        "State": "AAAA/wAAAAEAAAACAAAAnAAAASAA/////wEAAAABAA==",
+                                        "Widgets": [
+                                            {
+                                                "VolumeControls": {
+                                                    "Mode": 3
+                                                }
+                                            },
+                                            {
+                                                "Spectrum": {
+                                                    "AmplitudeGravity": 100,
+                                                    "AmplitudeHoldTimeMs": 0,
+                                                    "AmplitudeMaxDb": 0,
+                                                    "AmplitudeMinDb": -60,
+                                                    "AmplitudesEnabled": false,
+                                                    "AxisFont": "",
+                                                    "BandCount": 80,
+                                                    "BarSections": 1,
+                                                    "BarSpacing": 1,
+                                                    "DrawStyle": 0,
+                                                    "FftDurationMs": 100,
+                                                    "FftSize": 8192,
+                                                    "FftSizingMode": 1,
+                                                    "FillSpectrum": true,
+                                                    "GradientOrientation": 0,
+                                                    "Interpolate": true,
+                                                    "LabelMode": 0,
+                                                    "MaxFrequencyHz": 25000,
+                                                    "MaxNote": 125,
+                                                    "MinFrequencyHz": 50,
+                                                    "MinNote": 0,
+                                                    "PeakGravity": 50,
+                                                    "PeakHoldTimeMs": 500,
+                                                    "PeaksEnabled": true,
+                                                    "PitchHz": 440,
+                                                    "SectionSpacing": 1,
+                                                    "ShowBlackKeys": false,
+                                                    "ShowBottomLabels": true,
+                                                    "ShowHorizontalGrid": true,
+                                                    "ShowLeftLabels": false,
+                                                    "ShowRightLabels": true,
+                                                    "ShowTooltip": false,
+                                                    "ShowTopLabels": false,
+                                                    "ShowVerticalGrid": false,
+                                                    "ShowWhiteKeys": false,
+                                                    "Transpose": 0,
+                                                    "UpdateFps": 40,
+                                                    "UseCustomColours": false,
+                                                    "WindowFunction": 0
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "WindowSize": {
+        "Height": 1042,
+        "Width": 572
+    }
+}
